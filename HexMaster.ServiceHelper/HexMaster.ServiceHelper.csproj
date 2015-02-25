@@ -58,6 +58,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper.cs" />
+    <Compile Include="Threading\StaticThreadTaskScheduler.cs" />
+    <Compile Include="Types\ServiceCommands.cs" />
     <Compile Include="Views\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>

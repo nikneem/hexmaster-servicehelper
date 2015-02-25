@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,9 +25,31 @@ namespace HexMaster.Views
             InitializeComponent();
         }
 
+        public IEnumerable<ServiceBase> Services { get; set; }
+
         private void ExitButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
         	Close();
+        }
+
+        private void frmMain_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+
+        private void frmMain_Loaded(object sender, RoutedEventArgs e)
+        {
+            if ((Services != null) && (Services.Count() > 0))
+            {
+                spServices.Children.Clear();
+                foreach (var service in Services)
+                {
+                    var view = new ServiceView();
+                    view.Service = service;
+                    spServices.Children.Add(view);
+                }
+            }
         }
     }
 }

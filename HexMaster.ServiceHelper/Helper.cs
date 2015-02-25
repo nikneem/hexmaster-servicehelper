@@ -1,4 +1,5 @@
 ﻿using HexMaster.ServiceHelper;
+using HexMaster.Threading;
 using HexMaster.Views;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace HexMaster
                                 Width = 300,
                                 Height = 200,
                             };
+                            window.Services = services;
                             //                                Content = new ServicesControllerViewModel(services.Select(s => new ServiceViewModel(s)).ToList())
 
                             window.Show();
@@ -39,7 +41,7 @@ namespace HexMaster
                     },
                     CancellationToken.None,
                     TaskCreationOptions.PreferFairness,
-                    TaskScheduler.FromCurrentSynchronizationContext()
+                 new   StaticThreadTaskScheduler(25)
                 );
                 t.Wait();
             }
