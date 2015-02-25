@@ -26,9 +26,9 @@ namespace HexMaster
                         app.InitializeComponent();
                         app.Startup += (o, e) =>
                         {
-                            var window = new MainWindow
+                            var window = new Main
                             {
-                                Width = 350,
+                                Width = 300,
                                 Height = 200,
                             };
                             //                                Content = new ServicesControllerViewModel(services.Select(s => new ServiceViewModel(s)).ToList())
