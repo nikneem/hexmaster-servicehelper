@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -54,12 +55,14 @@ namespace HexMaster.Views
 
         private void frmMain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-        	this.Opacity = 1.0;
+            BeginAnimation(OpacityProperty, null);
+            this.Opacity = 1.0;
         }
 
         private void frmMain_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-        	this.Opacity = 0.5;
+            var opacityAnimation = new DoubleAnimation(1.0, 0.5, TimeSpan.FromMilliseconds(500));
+            BeginAnimation(OpacityProperty, opacityAnimation);
         }
     }
 }
