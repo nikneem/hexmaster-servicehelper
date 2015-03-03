@@ -33,15 +33,13 @@ namespace HexMaster
                                 Height = 200,
                             };
                             window.Services = services;
-                            //                                Content = new ServicesControllerViewModel(services.Select(s => new ServiceViewModel(s)).ToList())
-
                             window.Show();
                         };
                         app.Run();
                     },
                     CancellationToken.None,
                     TaskCreationOptions.PreferFairness,
-                 new   StaticThreadTaskScheduler(25)
+                    new StaticThreadTaskScheduler(25)
                 );
                 t.Wait();
             }

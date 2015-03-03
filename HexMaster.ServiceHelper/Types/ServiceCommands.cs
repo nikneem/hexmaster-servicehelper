@@ -1,5 +1,4 @@
-﻿
-namespace HexMaster.Types
+﻿namespace HexMaster.Types
 {
     public enum ServiceCommands
     {

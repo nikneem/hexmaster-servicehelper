@@ -9,19 +9,19 @@ namespace HexMaster.Threading
 {
     internal sealed class StaticThreadTaskScheduler : TaskScheduler, IDisposable
     {
-        private BlockingCollection<Task> _tasks;
-        private readonly List<Thread> _threads;
+        private BlockingCollection<Task> _tasksCollection;
+        private readonly List<Thread> _threadsList;
 
         public StaticThreadTaskScheduler(int numberOfThreads)
         {
             if (numberOfThreads < 1) throw new ArgumentOutOfRangeException("concurrencyLevel");
-            _tasks = new BlockingCollection<Task>();
+            _tasksCollection = new BlockingCollection<Task>();
 
-            _threads = Enumerable.Range(0, numberOfThreads).Select(i =>
+            _threadsList = Enumerable.Range(0, numberOfThreads).Select(i =>
             {
                 var thread = new Thread(() =>
                 {
-                    foreach (var t in _tasks.GetConsumingEnumerable())
+                    foreach (var t in _tasksCollection.GetConsumingEnumerable())
                     {
                         TryExecuteTask(t);
                     }
@@ -31,41 +31,39 @@ namespace HexMaster.Threading
                 return thread;
             }).ToList();
 
-            _threads.ForEach(t => t.Start());
+            _threadsList.ForEach(t => t.Start());
         }
 
         protected override void QueueTask(Task task)
         {
-            _tasks.Add(task);
+            _tasksCollection.Add(task);
         }
 
         protected override IEnumerable<Task> GetScheduledTasks()
         {
-            return _tasks.ToArray();
+            return _tasksCollection.ToArray();
         }
 
         protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
-            return
-                Thread.CurrentThread.GetApartmentState() == ApartmentState.STA &&
-                TryExecuteTask(task);
+            return Thread.CurrentThread.GetApartmentState() == ApartmentState.STA && TryExecuteTask(task);
         }
 
         public override int MaximumConcurrencyLevel
         {
-            get { return _threads.Count; }
+            get { return _threadsList.Count; }
         }
 
         public void Dispose()
         {
-            if (_tasks != null)
+            if (_tasksCollection != null)
             {
-                _tasks.CompleteAdding();
+                _tasksCollection.CompleteAdding();
 
-                foreach (var thread in _threads) thread.Join();
+                foreach (var thread in _threadsList) thread.Join();
 
-                _tasks.Dispose();
-                _tasks = null;
+                _tasksCollection.Dispose();
+                _tasksCollection = null;
             }
         }
     }
