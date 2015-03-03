@@ -51,5 +51,15 @@ namespace HexMaster.Views
                 }
             }
         }
+
+        private void frmMain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        	this.Opacity = 1.0;
+        }
+
+        private void frmMain_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        	this.Opacity = 0.5;
+        }
     }
 }
