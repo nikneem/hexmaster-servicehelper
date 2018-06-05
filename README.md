@@ -13,3 +13,6 @@ having the service helper installed.
 
 Note you can install the service helper easy using our NuGet package :<br />
 <code>install-package <strong>HexMaster.WindowsServiceHelper</strong></code>
+
+See the NuGet gallery page for more information :
+https://www.nuget.org/packages/HexMaster.WindowsServiceHelper/
